@@ -80,7 +80,7 @@ bool Command::handleClient(ClientData *client) {
     }
 }
 
-int Command::acceptClient() {
+int Command::acceptClient(std::unordered_map<int, Rooms*> *rooms) {
     sockaddr_in clientAddr;
     socklen_t clientAddrLen = sizeof(clientAddr);
     std::ostringstream logMessage;
@@ -100,6 +100,7 @@ int Command::acceptClient() {
         logMessage << "Erreur d'écriture sur le socket " << clientSocket << ": " << std::strerror(errno) << std::endl;
         std::cout << logMessage.str() << std::endl;
     }
+    rooms_ = rooms;
     return clientSocket;
 }
 
@@ -134,16 +135,39 @@ void Command::handleAuthCommand(ClientData* client, std::vector<std::string> com
         sendToClient(client, "550\r\n");
         return;
     }
+
+    auto it = rooms_->find(1);
+    if (it != rooms_->end()) {
+        client->room_join = it->second;
+    } else {
+        client->room_join = nullptr; 
+    }
+
+    Rooms* room = static_cast<Rooms*>(client->room_join);
+    room->connectClient(client->socket_fd);
+
     client->username = command[1];
     client->authenticated = true;
     sendToClient(client, "250\r\n");
 }
 
 void Command::handleMessCommand(ClientData* client, std::vector<std::string> command) {
-    
+    if (command.size() < 2) {
+        sendToClient(client, "550\r\n");
+        return;
+    }
+
+    Rooms* room = static_cast<Rooms*>(client->room_join);
+    command.erase(command.begin());
+    for (auto it: command) {
+        room->setMessage(client->username, it);
+    }
     sendToClient(client, "250\r\n");
 }
 
 void Command::handleQuitCommand(ClientData* client, std::vector<std::string> command) {
+    Rooms* room = static_cast<Rooms*>(client->room_join);
+    room->disconnectClient(client->socket_fd);
     sendToClient(client, "250\r\n");
+    client->reset();
 }

@@ -5,6 +5,8 @@ Server::Server(int portCommand) {
     queueClient_ = new ClientQueueThreadPool(10);
     port_ = portCommand;
     commandServer_ = nullptr;
+
+    rooms_.emplace(rooms_.size() + 1, new Rooms(rooms_.size() + 1));
 }
 
 Server::~Server() {
@@ -33,7 +35,7 @@ void Server::run() {
 }
 
 void Server::handleNewConnection() {
-    int clientSocket = commandServer_->acceptClient();
+    int clientSocket = commandServer_->acceptClient(&rooms_);
 
     if (clientSocket >= 0) {
         clients_.emplace_back(clientSocket);

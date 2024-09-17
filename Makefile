@@ -28,8 +28,8 @@ build:
 	@cd $(CLIENT_DIR)/$(BUILD_DIR) && $(MAKE)
 
 	@echo "$(GREEN)Creating symbolic links...$(RESET)"
-	@ln -sf ../$(SERVER_DIR)/$(BUILD_DIR)/CryptoMadness_Server $(BIN_DIR)/CryptoMadness_Server
-	@ln -sf ../$(CLIENT_DIR)/$(BUILD_DIR)/CryptoMadness_Client $(BIN_DIR)/CryptoMadness_Client
+	@ln -sf ../$(SERVER_DIR)/$(BIN_DIR)/CryptoMadness_Server $(BIN_DIR)/CryptoMadness_Server
+	@ln -sf ../$(CLIENT_DIR)/$(BIN_DIR)/CryptoMadness_Client $(BIN_DIR)/CryptoMadness_Client
 
 server:
 	@echo "$(BLUE)Building server...$(RESET)"

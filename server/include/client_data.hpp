@@ -8,11 +8,16 @@ struct ClientData {
 
     std::string client_adress_ip;
     std::string username;
-    std::string current_directory;
 
     bool authenticated;
 
     void* room_join;
+
+    void reset() {
+        authenticated = false;
+        client_adress_ip = "";
+        username = "";
+    }
 
     ClientData(int fd = -1) :
         socket_fd(fd),

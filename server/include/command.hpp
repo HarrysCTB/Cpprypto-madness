@@ -29,7 +29,7 @@ public:
     Command(ClientQueueThreadPool* threadPool = nullptr, int port = 9999);
     ~Command() {};
 
-    int acceptClient();
+    int acceptClient(std::unordered_map<int, Rooms*> *rooms);
     int getServerSocket() const;
     bool handleClient(ClientData* client);
     void sendToClient(ClientData *client, const std::string& message);
@@ -54,4 +54,6 @@ private:
     ClientData* client_;
 
     std::vector<int> portUse_;
+
+    std::unordered_map<int, Rooms*> *rooms_;
 };
