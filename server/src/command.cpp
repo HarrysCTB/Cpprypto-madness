@@ -8,7 +8,7 @@ Command::Command(ClientQueueThreadPool* queueClient, int port)
 
     commandHandlers_["auth"] = &Command::handleAuthCommand;
     commandHandlers_["mess"] = &Command::handleMessCommand;
-    commandHandlers_["quit"] = &Command::handleQuitCommand;
+    commandHandlers_["deco"] = &Command::handleDecoCommand;
 }
 
 void Command::setupServer(int port) {
@@ -130,8 +130,8 @@ void Command::processCommand(ClientData *client, const std::string &command) {
     }
 }
 
-void Command::handleAuthCommand(ClientData* client, std::vector<std::string> command) {
-    if (command.size() < 2) {
+void Command::handleAuthCommand(ClientData* client, std::vector<std::string> commands) {
+    if (commands.size() < 2) {
         sendToClient(client, "550\r\n");
         return;
     }
@@ -146,28 +146,31 @@ void Command::handleAuthCommand(ClientData* client, std::vector<std::string> com
     Rooms* room = static_cast<Rooms*>(client->room_join);
     room->connectClient(client->socket_fd);
 
-    client->username = command[1];
+    client->username = commands[1];
     client->authenticated = true;
     sendToClient(client, "250\r\n");
 }
 
-void Command::handleMessCommand(ClientData* client, std::vector<std::string> command) {
-    if (command.size() < 2) {
+void Command::handleMessCommand(ClientData* client, std::vector<std::string> commands) {
+    if (commands.size() < 2) {
         sendToClient(client, "550\r\n");
         return;
     }
 
     Rooms* room = static_cast<Rooms*>(client->room_join);
-    command.erase(command.begin());
-    for (auto it: command) {
-        room->setMessage(client->username, it);
+    commands.erase(commands.begin());
+    std::string command;
+    for (auto it: commands) {
+        command += it + " ";
     }
+    room->setMessage(client->username, command);
     sendToClient(client, "250\r\n");
 }
 
-void Command::handleQuitCommand(ClientData* client, std::vector<std::string> command) {
+void Command::handleDecoCommand(ClientData* client, std::vector<std::string> commands) {
     Rooms* room = static_cast<Rooms*>(client->room_join);
     room->disconnectClient(client->socket_fd);
+
     sendToClient(client, "250\r\n");
     client->reset();
 }

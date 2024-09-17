@@ -40,9 +40,9 @@ private:
     void setupServer(int port);
     void processCommand(ClientData* client, const std::string& command);
 
-    void handleAuthCommand(ClientData* client, std::vector<std::string> command);
-    void handleMessCommand(ClientData* client, std::vector<std::string> command);
-    void handleQuitCommand(ClientData* client, std::vector<std::string> command);
+    void handleAuthCommand(ClientData* client, std::vector<std::string> commands);
+    void handleMessCommand(ClientData* client, std::vector<std::string> commands);
+    void handleDecoCommand(ClientData* client, std::vector<std::string> commands);
 
     int serverSocketCommand_;
     struct sockaddr_in serverAddrCommand_;

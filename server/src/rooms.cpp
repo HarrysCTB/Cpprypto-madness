@@ -36,6 +36,10 @@ void Rooms::setMessage(const std::string &username, const std::string& message) 
     cv_.notify_all();
 }
 
+int Rooms::getId() {
+    return roomsId_;
+}
+
 void Rooms::sendNewMessageToClients() {
     if (!messages_.empty()) {
         std::string lastMessage = "new_msg_room " + std::to_string(roomsId_) + " " + messages_.back().first + " " + messages_.back().second;
@@ -43,10 +47,6 @@ void Rooms::sendNewMessageToClients() {
             write(client, lastMessage.c_str(), lastMessage.size());
         }
     }
-}
-
-int Rooms::getId() {
-    return roomsId_;
 }
 
 void Rooms::monitorMessages() {
