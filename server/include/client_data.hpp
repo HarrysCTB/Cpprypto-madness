@@ -12,6 +12,8 @@ struct ClientData {
 
     bool authenticated;
 
+    void* room_join;
+
     ClientData(int fd = -1) :
         socket_fd(fd),
         client_adress_ip(""),

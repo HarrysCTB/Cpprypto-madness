@@ -6,7 +6,7 @@ Command::Command(ClientQueueThreadPool* queueClient, int port)
     client_ = nullptr;
     setupServer(port);
 
-    commandHandlers_["user"] = &Command::handleUserCommand;
+    commandHandlers_["auth"] = &Command::handleAuthCommand;
     commandHandlers_["mess"] = &Command::handleMessCommand;
     commandHandlers_["quit"] = &Command::handleQuitCommand;
 }
@@ -95,7 +95,7 @@ int Command::acceptClient() {
     std::string clientIP = inet_ntoa(clientAddr.sin_addr);
     logMessage << "Client connected (IP: " << clientIP << ")" << std::endl;
     std::cout << logMessage.str() << std::endl;
-    std::string message = "220 Welcome from sever\r\n";
+    std::string message = "220\r\n";
     if (send(clientSocket, message.c_str(), message.length(), 0) < 0) {
         logMessage << "Erreur d'écriture sur le socket " << clientSocket << ": " << std::strerror(errno) << std::endl;
         std::cout << logMessage.str() << std::endl;
@@ -118,24 +118,32 @@ void Command::processCommand(ClientData *client, const std::string &command) {
     auto itCommand = commandHandlers_.find(commands[0]);
     if (itCommand != commandHandlers_.end()) {
         queueClient_->enqueueClientTask(client->socket_fd, [this, client, commands, itCommand]() {
-            std::cout << "Command :" << commands[0] << std::endl;
-            (this->*(itCommand->second))(client, commands);
+            if (!client->authenticated && commands[0] == "auth" || client->authenticated) {
+                (this->*(itCommand->second))(client, commands);
+            } else {
+               sendToClient(client, "550\r\n");
+            }
         });
     } else {
-        logMessage << "500 Syntax error. " << commands[0] << std::endl;
-        std::cout << logMessage.str() << std::endl;
-        sendToClient(client, "500 Syntax error.\r\n");
+        sendToClient(client, "500\r\n");
     }
 }
 
-void Command::handleUserCommand(ClientData* client, std::vector<std::string> command) {
-    sendToClient(client, "250 Command okay.\r\n");
+void Command::handleAuthCommand(ClientData* client, std::vector<std::string> command) {
+    if (command.size() < 2) {
+        sendToClient(client, "550\r\n");
+        return;
+    }
+    client->username = command[1];
+    client->authenticated = true;
+    sendToClient(client, "250\r\n");
 }
 
 void Command::handleMessCommand(ClientData* client, std::vector<std::string> command) {
-    sendToClient(client, "250 Command okay.\r\n");
+    
+    sendToClient(client, "250\r\n");
 }
 
 void Command::handleQuitCommand(ClientData* client, std::vector<std::string> command) {
-    sendToClient(client, "250 Command okay.\r\n");
+    sendToClient(client, "250\r\n");
 }

@@ -40,7 +40,7 @@ private:
     void setupServer(int port);
     void processCommand(ClientData* client, const std::string& command);
 
-    void handleUserCommand(ClientData* client, std::vector<std::string> command);
+    void handleAuthCommand(ClientData* client, std::vector<std::string> command);
     void handleMessCommand(ClientData* client, std::vector<std::string> command);
     void handleQuitCommand(ClientData* client, std::vector<std::string> command);
 
