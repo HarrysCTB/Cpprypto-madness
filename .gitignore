@@ -1,4 +1,7 @@
-build
+client/build
+server/build
+client/bin
+server/bin
 bin
 .vscode
-.DsStore
+.DS_Store
