@@ -1,6 +1,7 @@
-#include <iostream>
+#include "server.hpp"
 
 int main() {
-    std::cout << "Hello, World! Server!" << std::endl;
+    Server server = Server();
+    server.run();
     return 0;
 }

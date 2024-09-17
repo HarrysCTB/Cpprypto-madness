@@ -35,13 +35,13 @@ server:
 	@echo "$(BLUE)Building server...$(RESET)"
 	@cd $(SERVER_DIR)/$(BUILD_DIR) && $(MAKE)
 	@echo "$(GREEN)Creating server symbolic link...$(RESET)"
-	@ln -sf ../$(SERVER_DIR)/$(BUILD_DIR)/CryptoMadness_Server $(BIN_DIR)/CryptoMadness_Server
+	@ln -sf ../$(SERVER_DIR)/$(BIN_DIR)/CryptoMadness_Server $(BIN_DIR)/CryptoMadness_Server
 
 client:
 	@echo "$(BLUE)Building client...$(RESET)"
 	@cd $(CLIENT_DIR)/$(BUILD_DIR) && $(MAKE)
 	@echo "$(GREEN)Creating client symbolic link...$(RESET)"
-	@ln -sf ../$(CLIENT_DIR)/$(BUILD_DIR)/CryptoMadness_Client $(BIN_DIR)/CryptoMadness_Client
+	@ln -sf ../$(CLIENT_DIR)/$(BIN_DIR)/CryptoMadness_Client $(BIN_DIR)/CryptoMadness_Client
 
 clear:
 	@echo "$(YELLOW)Clearing files in bin directories...$(RESET)"
