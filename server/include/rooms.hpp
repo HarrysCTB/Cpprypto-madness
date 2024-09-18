@@ -31,3 +31,4 @@ private:
     bool stopRequested_ = false;
     std::thread monitoringThread_;
 };
+

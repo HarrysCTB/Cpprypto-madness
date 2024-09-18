@@ -5,3 +5,4 @@ server/bin
 bin
 .vscode
 .DS_Store
+.idea
