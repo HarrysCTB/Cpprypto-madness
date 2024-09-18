@@ -4,8 +4,10 @@ project(CryptoMadness_Client)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(ENV_USER $ENV{USER})
+set(CMAKE_PREFIX_PATH /Users/${ENV_USER}/Qt/6.7.2/macos/lib/cmake)
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-set(CMAKE_PREFIX_PATH "/Users/jordan/Qt/6.7.2/macos")
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core)
 
