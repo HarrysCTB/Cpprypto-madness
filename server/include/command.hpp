@@ -4,6 +4,7 @@
 #include "client_data.hpp"
 #include "thread_pool.hpp"
 #include "client_queue_thread_pool.hpp"
+#include "define.hpp"
 
 #include <map>
 #include <vector>

@@ -120,7 +120,7 @@ void Command::processCommand(ClientData *client, const std::string &command) {
     auto itCommand = commandHandlers_.find(commands[0]);
     if (itCommand != commandHandlers_.end()) {
         queueClient_->enqueueClientTask(client->socket_fd, [this, client, commands, itCommand]() {
-            if (!client->authenticated && commands[0] == "auth" || client->authenticated) {
+            if (!client->authenticated && (commands[0] == "auth" || commands[0] == "crea") || client->authenticated) {
                 (this->*(itCommand->second))(client, commands);
             } else {
                sendToClient(client, "550\r\n");

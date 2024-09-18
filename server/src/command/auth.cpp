@@ -1,4 +1,5 @@
 #include "command.hpp"
+#include "user_manager.hpp"
 
 /**
  * @brief Handles the client authentication command (AUTH).
@@ -34,7 +35,7 @@
  *  - **250**: The client is successfully authenticated and can proceed to the next operations.
  */
 void Command::handleAuthCommand(ClientData* client, std::vector<std::string> commands) {
-    if (commands.size() != 2) {
+    if (commands.size() != 3) { // Expecting both username and password
         sendToClient(client, "550 Insufficient arguments\r\n");
         return;
     }
@@ -42,29 +43,30 @@ void Command::handleAuthCommand(ClientData* client, std::vector<std::string> com
     const std::string& username = commands[1];
     const std::string& password = commands[2];
 
-    bool usernameExists = false; // Todo
-    if (!usernameExists) {
+    UserManager userManager(username);
+
+    if (!userManager.userExist()) {
         sendToClient(client, "551 Username not found\r\n");
         return;
     }
 
-    bool passwordValid = true; // Todo
-    if (!passwordValid) {
+    if (!userManager.verifyPassword(password)) {
         sendToClient(client, "552 Incorrect password\r\n");
         return;
     }
 
-    auto it = rooms_->find(1); // connect all clien to room one
+    auto it = rooms_->find(1);
     if (it == rooms_->end()) {
         sendToClient(client, "561 Room not found\r\n");
         return;
     }
+
     client->room_join = it->second;
     Rooms* room = static_cast<Rooms*>(client->room_join);
     room->connectClient(client->socket_fd);
 
     client->username = username;
     client->authenticated = true;
+
     sendToClient(client, "250 Authentication successful\r\n");
 }
-   

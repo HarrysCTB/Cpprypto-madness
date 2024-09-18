@@ -53,7 +53,6 @@ void Command::handleMessCommand(ClientData* client, std::vector<std::string> com
     }
     message.pop_back(); 
 
-    Rooms* room = static_cast<Rooms*>(client->room_join);
     room->setMessage(client->username, message);
     bool messageSent = true; //Todo
     if (!messageSent) {

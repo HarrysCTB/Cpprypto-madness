@@ -1,4 +1,5 @@
 #include "command.hpp"
+#include "user_manager.hpp"
 
 /**
  * @brief Handles the account creation command (CREA).
@@ -59,8 +60,9 @@ void Command::handleCreaCommand(ClientData* client, std::vector<std::string> com
         return;
     }
 
-    bool usernameExists = false; //Todo
-    if (usernameExists) {
+    UserManager userManager(username);
+
+    if (userManager.userExist()) {
         sendToClient(client, "552 Username already taken\r\n");
         return;
     }
@@ -81,8 +83,7 @@ void Command::handleCreaCommand(ClientData* client, std::vector<std::string> com
         return;
     }
 
-    bool accountCreated = false; //Todo
-    if (!accountCreated) {
+    if (!userManager.createUser(password)) {
         sendToClient(client, "561 Server error during account creation\r\n");
         return;
     }
