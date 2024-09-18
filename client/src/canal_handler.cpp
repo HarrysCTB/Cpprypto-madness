@@ -1,5 +1,5 @@
-#include "../include/canal_handler.hpp"
-#include "../include/message_handler.hpp"
+#include "canal_handler.hpp"
+#include "message_handler.hpp"
 #include <iostream>
 
 CanalHandler::CanalHandler(int socket_fd) : socket_fd(socket_fd) {}
