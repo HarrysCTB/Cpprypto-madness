@@ -1,6 +1,7 @@
-#include <iostream>
+#include "../include/client.hpp"
 
 int main() {
-    std::cout << "Hello, World! Client!" << std::endl;
+    Client client;
+    client.run();
     return 0;
 }
