@@ -7,6 +7,7 @@ Command::Command(ClientQueueThreadPool* queueClient, int port)
     setupServer(port);
 
     commandHandlers_["auth"] = &Command::handleAuthCommand;
+    commandHandlers_["crea"] = &Command::handleCreaCommand;
     commandHandlers_["mess"] = &Command::handleMessCommand;
     commandHandlers_["deco"] = &Command::handleDecoCommand;
 }
@@ -128,49 +129,4 @@ void Command::processCommand(ClientData *client, const std::string &command) {
     } else {
         sendToClient(client, "500\r\n");
     }
-}
-
-void Command::handleAuthCommand(ClientData* client, std::vector<std::string> commands) {
-    if (commands.size() < 2) {
-        sendToClient(client, "550\r\n");
-        return;
-    }
-
-    auto it = rooms_->find(1);
-    if (it != rooms_->end()) {
-        client->room_join = it->second;
-    } else {
-        client->room_join = nullptr; 
-    }
-
-    Rooms* room = static_cast<Rooms*>(client->room_join);
-    room->connectClient(client->socket_fd);
-
-    client->username = commands[1];
-    client->authenticated = true;
-    sendToClient(client, "250\r\n");
-}
-
-void Command::handleMessCommand(ClientData* client, std::vector<std::string> commands) {
-    if (commands.size() < 2) {
-        sendToClient(client, "550\r\n");
-        return;
-    }
-
-    Rooms* room = static_cast<Rooms*>(client->room_join);
-    commands.erase(commands.begin());
-    std::string command;
-    for (auto it: commands) {
-        command += it + " ";
-    }
-    room->setMessage(client->username, command);
-    sendToClient(client, "250\r\n");
-}
-
-void Command::handleDecoCommand(ClientData* client, std::vector<std::string> commands) {
-    Rooms* room = static_cast<Rooms*>(client->room_join);
-    room->disconnectClient(client->socket_fd);
-
-    sendToClient(client, "250\r\n");
-    client->reset();
 }
