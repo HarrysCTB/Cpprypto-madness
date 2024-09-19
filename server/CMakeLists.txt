@@ -11,7 +11,7 @@ include_directories(include)
 include_directories(/opt/homebrew/Cellar/cryptopp/8.9.0/include/cryptopp)
 link_directories(/opt/homebrew/Cellar/cryptopp/8.9.0/lib)
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES "src/*.cpp" "src/command/*.cpp")
 
 add_executable(CryptoMadness_Server ${SOURCES})
 
