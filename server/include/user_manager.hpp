@@ -8,8 +8,11 @@
 #include <iostream>
 #include <algorithm>
 
-#include <md5.h>
+#include <osrng.h>
 #include <hex.h>
+#include <filters.h>
+#include <scrypt.h>
+#include <sha3.h>
 
 class UserManager {
 private:
