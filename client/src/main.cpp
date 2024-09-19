@@ -1,19 +1,24 @@
 #include "client.hpp"
-#include "login_page.h"
+#include "main_window.h"
+#include "user_controller.h"
+#include <thread>
+
 #include <QApplication>
-#include <QWidget>
 
 int main(int argc, char **argv) {
     QApplication app(argc, argv);
 
-    LoginPage loginPage;
+    UserController userController;
 
-    loginPage.setWindowTitle("Connect to Vortex Messenger");
-    loginPage.resize(800, 600);
+    MainWindow mainWindow(&userController);
+    mainWindow.show();
 
-    loginPage.show();
+    std::thread t([&userController, &mainWindow]() {
+        Client client(&userController, &mainWindow);
+        client.run();
+    });
 
-    //Client client;
-    //client.run();
-    return app.exec();
+    app.exec();
+    t.join();
+    return 0;
 }

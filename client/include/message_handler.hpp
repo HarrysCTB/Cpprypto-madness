@@ -8,6 +8,8 @@ class MessageHandler {
         MessageHandler();
         void sendMessage(int socket, const std::string& message);
         std::string receiveMessage(int socket);
+    
+    private:
 };
 
 #endif

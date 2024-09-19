@@ -6,13 +6,13 @@
 class CanalHandler {
     public:
         CanalHandler(int socket_fd);
-        void handleCommand(const std::string& command);
 
-    private:
-        void handleAuth(const std::string& username);
+        void handleAuth(const std::string& username, const std::string& password);
+        void handleCrea(const std::string& username, const std::string& password);
         void handleMessage(const std::string& message);
         void handleQuit();
 
+    private:
         int socket_fd;
 };
 

@@ -15,6 +15,7 @@ class HomePage : public QWidget {
 
 public:
     explicit HomePage(QWidget *parent = nullptr);
+    ~HomePage();
 
 private:
     QListWidget *channelList;

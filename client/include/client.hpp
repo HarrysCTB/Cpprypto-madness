@@ -1,11 +1,17 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
+#include "user_controller.h"
+#include "main_window.h"
+
 #include <string>
+
+class UserController;
+class MainWindow;
 
 class Client {
     public:
-        Client();
+        Client(UserController *UserController, MainWindow *mainWindow);
         void run();
         void connectToServer(const std::string& server_ip, int port, const std::string& username);
         void handleInput();
@@ -14,6 +20,9 @@ class Client {
     private:
         std::string username;
         int server_socket;
+    
+    UserController *userController;
+    MainWindow *mainWindow;
 };
 
 #endif

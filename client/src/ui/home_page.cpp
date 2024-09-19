@@ -2,9 +2,7 @@
 
 HomePage::HomePage(QWidget *parent) : QWidget(parent) {
     channelList = new QListWidget(this);
-    channelList->addItem("Canal 1");
-    channelList->addItem("Canal 2");
-    channelList->addItem("Canal 3");
+    channelList->addItem("Rooms 1");
     channelList->setFixedWidth(250);
 
     channelList->setStyleSheet(
@@ -38,7 +36,6 @@ HomePage::HomePage(QWidget *parent) : QWidget(parent) {
             "   border: none;"
             "}"
     );
-
 
     QLineEdit *messageInput = new QLineEdit(this);
     messageInput->setPlaceholderText("Entrez votre message...");
@@ -77,9 +74,14 @@ HomePage::HomePage(QWidget *parent) : QWidget(parent) {
     mainLayout->addLayout(chatLayout, 2);
 
     setLayout(mainLayout);
-    setWindowTitle("Home Page");
+    setWindowTitle("Vortex Messenger");
     this->setStyleSheet("background-color: #222831;");
-    resize(800, 600);
+    resize(1280, 720);
 }
 
-
+HomePage::~HomePage() {
+    delete channelList;
+    delete chatHistory;
+    delete messageInput;
+    delete sendButton;
+}

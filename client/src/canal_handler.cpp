@@ -4,23 +4,14 @@
 
 CanalHandler::CanalHandler(int socket_fd) : socket_fd(socket_fd) {}
 
-void CanalHandler::handleCommand(const std::string& command) {
-    if (command.find("auth ") == 0) {
-        std::string username = command.substr(5);
-        handleAuth(username);
-    } else if (command.find("mess ") == 0) {
-        std::string message = command.substr(5);
-        handleMessage(message);
-    } else if (command == "deco") {
-        handleQuit();
-    } else {
-        std::cerr << "Commande inconnue." << std::endl;
-    }
+void CanalHandler::handleAuth(const std::string& username, const std::string& password) {
+    MessageHandler msgHandler;
+    msgHandler.sendMessage(socket_fd, "auth " + username + " " + password);
 }
 
-void CanalHandler::handleAuth(const std::string& username) {
+void CanalHandler::handleCrea(const std::string& username, const std::string& password) {
     MessageHandler msgHandler;
-    msgHandler.sendMessage(socket_fd, "auth " + username);
+    msgHandler.sendMessage(socket_fd, "crea " + username + " " + password);
 }
 
 void CanalHandler::handleMessage(const std::string& message) {
