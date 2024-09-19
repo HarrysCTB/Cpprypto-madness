@@ -10,7 +10,6 @@
 #include <QVBoxLayout>
 #include <QLabel>
 
-
 class HomePage : public QWidget {
 
 public:
@@ -18,10 +17,7 @@ public:
     ~HomePage();
 
 private:
-    QListWidget *channelList;
-    QTextEdit *chatHistory;
-    QLineEdit *messageInput;
-    QPushButton *sendButton;
+
 };
 
 #endif  // HOME_PAGE_H

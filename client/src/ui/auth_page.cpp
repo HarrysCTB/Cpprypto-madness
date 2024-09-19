@@ -101,6 +101,7 @@ AuthPage::AuthPage(QWidget *parent) : QFrame(parent), switchButtonStatus(false) 
             handleLogin();
         }
     });
+
     connect(switchButton, &QPushButton::clicked, this, [this] {
         switchButtonStatus = !switchButtonStatus;
         if (switchButtonStatus) {
@@ -110,6 +111,8 @@ AuthPage::AuthPage(QWidget *parent) : QFrame(parent), switchButtonStatus(false) 
             sendButton->setText("Login");
             switchButton->setText("Register");
         }
+        usernameInput->setText("");
+        passwordInput->setText("");
     });
 }
 
@@ -118,36 +121,8 @@ void AuthPage::handleLogin() {
     QString password = passwordInput->text();
 
     if (username.isEmpty() || password.isEmpty()) {
-        QMessageBox msgBox(this);
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setWindowTitle("Erreur de connexion");
-        msgBox.setText("Veuillez entrer un nom d'utilisateur et un mot de passe.");
-        msgBox.setStyleSheet(
-            "QMessageBox {"
-            "    color: white;"
-            "}"
-            "QPushButton {"
-            "    color: white;"
-            "    border: none;"
-            "    border-radius: 3px;"
-            "}"
-            "QLabel { color: white; }"
-        );
-
-        QPushButton *okButton = msgBox.addButton(QMessageBox::Ok);
-        okButton->setStyleSheet(
-            "QPushButton {"
-            "    color: white;"
-            "    background-color: rgba(234, 120, 50, 1);"
-            "    border: none;"
-            "    padding: 5px 10px;"
-            "}"
-            "QPushButton:hover {"
-            "    background-color: rgba(234, 120, 50, 0.9);"
-            "}"
-        );
-
-        msgBox.exec();
+        usernameInput->setText("");
+        passwordInput->setText("");
         return;
     }
     emit newLogin(username.toStdString(), password.toStdString());
@@ -158,36 +133,8 @@ void AuthPage::handleRegister() {
     QString password = passwordInput->text();
 
     if (username.isEmpty() || password.isEmpty()) {
-        QMessageBox msgBox(this);
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setWindowTitle("Erreur d'inscription");
-        msgBox.setText("Veuillez entrer un nom d'utilisateur et un mot de passe.");
-        msgBox.setStyleSheet(
-            "QMessageBox {"
-            "    color: white;"
-            "}"
-            "QPushButton {"
-            "    color: white;"
-            "    border: none;"
-            "    border-radius: 3px;"
-            "}"
-            "QLabel { color: white; }"
-        );
-
-        QPushButton *okButton = msgBox.addButton(QMessageBox::Ok);
-        okButton->setStyleSheet(
-            "QPushButton {"
-            "    color: white;"
-            "    background-color: rgba(234, 120, 50, 1);"
-            "    border: none;"
-            "    padding: 5px 10px;"
-            "}"
-            "QPushButton:hover {"
-            "    background-color: rgba(234, 120, 50, 0.9);"
-            "}"
-        );
-
-        msgBox.exec();
+        usernameInput->setText("");
+        passwordInput->setText("");
         return;
     }
     emit newRegister(username.toStdString(), password.toStdString());
@@ -201,81 +148,20 @@ AuthPage::~AuthPage() {
 }
 
 void AuthPage::responseLogin(int code) {
-    QMessageBox msgBox(this);
-    msgBox.setStyleSheet(
-        "QMessageBox {"
-        "    color: white;"
-        "}"
-        "QPushButton {"
-        "    color: white;"
-        "    border: none;"
-        "    border-radius: 3px;"
-        "}"
-        "QLabel { color: white; }"
-    );
-
-    QPushButton *okButton = msgBox.addButton(QMessageBox::Ok);
-    okButton->setStyleSheet(
-        "QPushButton {"
-        "    color: white;"
-        "    background-color: rgba(234, 120, 50, 1);"
-        "    border: none;"
-        "    padding: 5px 10px;"
-        "}"
-        "QPushButton:hover {"
-        "    background-color: rgba(234, 120, 50, 0.9);"
-        "}"
-    );
-
     if (code == 250) {
         emit LoginOk();
         this->close();
     } else {
-        msgBox.setWindowTitle("Login Error");
-        msgBox.setText("Login ou mot de passe incorrect.");
-        msgBox.exec();
         usernameInput->setText("");
         passwordInput->setText("");
     }
 }
 
 void AuthPage::responseRegister(int code) {
-    QMessageBox msgBox(this);
-    msgBox.setStyleSheet(
-        "QMessageBox {"
-        "    color: white;"
-        "}"
-        "QPushButton {"
-        "    color: white;"
-        "    border: none;"
-        "    border-radius: 3px;"
-        "}"
-        "QLabel { color: white; }"
-    );
-
-    QPushButton *okButton = msgBox.addButton(QMessageBox::Ok);
-    okButton->setStyleSheet(
-        "QPushButton {"
-        "    color: white;"
-        "    background-color: rgba(234, 120, 50, 1);"
-        "    border: none;"
-        "    padding: 5px 10px;"
-        "}"
-        "QPushButton:hover {"
-        "    background-color: rgba(234, 120, 50, 0.9);"
-        "}"
-    );
-
     if (code == 250) {
-        msgBox.setWindowTitle("Register Success");
-        msgBox.setText("register success");
-        msgBox.exec();
         sendButton->setText("Register");
         switchButton->setText("Login");
     } else {
-        msgBox.setWindowTitle("Register Error");
-        msgBox.setText("register error");
-        msgBox.exec();
         usernameInput->setText("");
         passwordInput->setText("");
     }

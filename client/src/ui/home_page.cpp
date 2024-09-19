@@ -1,87 +1,76 @@
 #include "home_page.h"
 
 HomePage::HomePage(QWidget *parent) : QWidget(parent) {
-    channelList = new QListWidget(this);
-    channelList->addItem("Rooms 1");
-    channelList->setFixedWidth(250);
+    setStyleSheet("background-color: #222831;");
 
-    channelList->setStyleSheet(
-            "QListWidget {"
-            "   border: none;"
-            "   background-color: #20232A;"
-            "   color: white;"
-            "   padding: 10px;"
-            "}"
-            "QListWidget::item {"
-            "   margin: 5px;"
-            "   padding: 15px;"
-            "   border-radius: 10px;"
-            "   background-color: #2E3238;"
-            "}"
-            "QListWidget::item:hover {"
-            "   background-color: #40444B;"
-            "}"
-            "QListWidget::item:selected {"
-            "   background-color: #4A5058;"
-            "}"
+    QHBoxLayout *horizontalLayout = new QHBoxLayout;
+    horizontalLayout->setContentsMargins(0, 0, 0, 0);
+
+
+    QWidget *SelectRoomsWidget = new QWidget;
+    QVBoxLayout *leftVerticalLayout = new QVBoxLayout;
+    leftVerticalLayout->setContentsMargins(0, 0, 0, 0);
+
+    QWidget *topWidget = new QWidget;
+    topWidget->setFixedHeight(100);
+
+    QWidget *middleWidget = new QWidget;
+    middleWidget->setFixedHeight(50);
+    QHBoxLayout *middleLayout = new QHBoxLayout;
+    QLabel *textLabel = new QLabel("All Conversation");
+    QPushButton *button = new QPushButton("+");
+
+    middleLayout->addWidget(textLabel);
+    middleLayout->addWidget(button);
+    middleLayout->setContentsMargins(10, 0, 10, 0);
+    middleLayout->setSpacing(10);
+
+    middleWidget->setLayout(middleLayout);
+
+    QWidget *bottomWidget = new QWidget;
+
+    leftVerticalLayout->addWidget(topWidget);
+    leftVerticalLayout->addWidget(middleWidget);
+    leftVerticalLayout->addWidget(bottomWidget);
+
+    bottomWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    SelectRoomsWidget->setLayout(leftVerticalLayout);
+    SelectRoomsWidget->setFixedWidth(225);
+    
+    SelectRoomsWidget->setStyleSheet(
+        "QWidget#SelectRoomsWidget { background-color: #222831; border-right: 1px solid white; }"
+        "QWidget#topWidget { background-color: transparent; border-bottom: 1px solid white; }"
+        "QWidget#middleWidget { background-color: transparent; border-bottom: 0.5px solid rgba(255, 255, 255, 0.4); }"
+        "QWidget#bottomWidget { background-color: transparent; }"
+        "QLabel { color: white; }"
+        "QPushButton { background-color: #37414F; color: white; width: 44px; height: 25px; border-radius: 5px}"
     );
 
-    chatHistory = new QTextEdit(this);
-    chatHistory->setReadOnly(true);
-    chatHistory->setPlaceholderText("Chat history...");
-    chatHistory->setStyleSheet(
-            "QTextEdit {"
-            "   background-color: #18191C;"
-            "   color: white;"
-            "   border: none;"
-            "}"
-    );
+    SelectRoomsWidget->setObjectName("SelectRoomsWidget");
+    topWidget->setObjectName("topWidget");
+    middleWidget->setObjectName("middleWidget");
+    bottomWidget->setObjectName("bottomWidget");
 
-    QLineEdit *messageInput = new QLineEdit(this);
-    messageInput->setPlaceholderText("Entrez votre message...");
-    messageInput->setStyleSheet(
-            "QLineEdit {"
-            "   background-color: #20232A;"
-            "   color: white;"
-            "   border-radius: 5px;"
-            "   padding: 8px;"
-            "}"
-    );
 
-    QPushButton *sendButton = new QPushButton("Envoyer", this);
-    sendButton->setStyleSheet(
-            "QPushButton {"
-            "   background-color: #fd7014;"
-            "   color: white;"
-            "   padding: 8px 15px;"
-            "   border-radius: 5px;"
-            "}"
-            "QPushButton:hover {"
-            "   background-color: #ff8c42;"
-            "}"
-    );
 
-    QHBoxLayout *inputLayout = new QHBoxLayout();
-    inputLayout->addWidget(messageInput, 1);
-    inputLayout->addWidget(sendButton);
 
-    QVBoxLayout *chatLayout = new QVBoxLayout();
-    chatLayout->addWidget(chatHistory, 1);
-    chatLayout->addLayout(inputLayout);
+    QWidget *roomsWidget = new QWidget;
+    QVBoxLayout *roomsLayout = new QVBoxLayout;
 
-    QHBoxLayout *mainLayout = new QHBoxLayout(this);
-    mainLayout->addWidget(channelList, 1);
-    mainLayout->addLayout(chatLayout, 2);
+    QPushButton *rightButton1 = new QPushButton("Colonne Droite - Bouton 1");
+    QPushButton *rightButton2 = new QPushButton("Colonne Droite - Bouton 2");
+    roomsLayout->addWidget(rightButton1);
+    roomsLayout->addWidget(rightButton2);
 
-    setLayout(mainLayout);
-    setWindowTitle("Vortex Messenger");
-    this->setStyleSheet("background-color: #222831;");
-    resize(1280, 720);
+    roomsWidget->setLayout(roomsLayout);
+
+    horizontalLayout->addWidget(SelectRoomsWidget);
+    horizontalLayout->addWidget(roomsWidget);
+
+    setLayout(horizontalLayout);
 }
 
 HomePage::~HomePage() {
-    delete channelList;
-    delete chatHistory;
-    delete messageInput;
-    delete sendButton;
+    
 }
