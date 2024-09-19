@@ -1,7 +1,7 @@
-#include "../include/client.hpp"
-#include "../include/network.hpp"
-#include "../include/message_handler.hpp"
-#include "../include/canal_handler.hpp"
+#include "client.hpp"
+#include "network.hpp"
+#include "message_handler.hpp"
+#include "canal_handler.hpp"
 #include <thread>
 #include <iostream>
 

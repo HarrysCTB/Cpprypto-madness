@@ -1,0 +1,8 @@
+/Users/elarifinzoudine/Cpprypto-madness/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/elarifinzoudine/Cpprypto-madness/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/elarifinzoudine/Cpprypto-madness/cmake-build-debug/server/CMakeFiles/CryptoMadness_Server.dir
+/Users/elarifinzoudine/Cpprypto-madness/cmake-build-debug/server/CMakeFiles/edit_cache.dir
+/Users/elarifinzoudine/Cpprypto-madness/cmake-build-debug/server/CMakeFiles/rebuild_cache.dir
+/Users/elarifinzoudine/Cpprypto-madness/cmake-build-debug/client/CMakeFiles/CryptoMadness_Client.dir
+/Users/elarifinzoudine/Cpprypto-madness/cmake-build-debug/client/CMakeFiles/edit_cache.dir
+/Users/elarifinzoudine/Cpprypto-madness/cmake-build-debug/client/CMakeFiles/rebuild_cache.dir

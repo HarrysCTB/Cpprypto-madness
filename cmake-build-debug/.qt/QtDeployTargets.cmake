@@ -1,0 +1,4 @@
+set(__QT_DEPLOY_TARGET_CryptoMadness_Server_FILE /Users/elarifinzoudine/Cpprypto-madness/bin/CryptoMadness_Server)
+set(__QT_DEPLOY_TARGET_CryptoMadness_Server_TYPE EXECUTABLE)
+set(__QT_DEPLOY_TARGET_CryptoMadness_Client_FILE /Users/elarifinzoudine/Cpprypto-madness/bin/CryptoMadness_Client)
+set(__QT_DEPLOY_TARGET_CryptoMadness_Client_TYPE EXECUTABLE)
