@@ -35,7 +35,7 @@
  *  - **250**: The client is successfully authenticated and can proceed to the next operations.
  */
 void Command::handleAuthCommand(ClientData* client, std::vector<std::string> commands) {
-    if (commands.size() != 3) { // Expecting both username and password
+    if (commands.size() != 3) {
         sendToClient(client, "550 Insufficient arguments\r\n");
         return;
     }
