@@ -79,28 +79,26 @@ void UserManager::loadUser() {
 }
 
 std::string UserManager::hashPassword(const std::string& password) const {
+    CryptoPP::SHA3_256 sha3;
+    std::string sha3Digest;
+
+    CryptoPP::StringSource ss1(password, true, new CryptoPP::HashFilter(sha3, new CryptoPP::StringSink(sha3Digest)));
+
     const size_t N = 16384;  // Cost factor (iterations)
     const size_t r = 8;      // Block size
     const size_t p = 1;      // Parallelism factor (threads)
-    const size_t dkLen = 32; // Desired derived key length (32 bytes for SHA3-256)
+    const size_t dkLen = 32; // Desired derived key length (32 bytes)
 
     CryptoPP::SecByteBlock derivedKey(dkLen);
     CryptoPP::Scrypt scrypt;
     scrypt.DeriveKey(derivedKey, derivedKey.size(),
-                      (const CryptoPP::byte*)password.data(), password.size(),
+                      (const CryptoPP::byte*)sha3Digest.data(), sha3Digest.size(),
                       (const CryptoPP::byte*)currentSalt_.data(), currentSalt_.size(),
                       N, r, p);
 
-    CryptoPP::SHA3_256 sha3;
-    std::string sha3Digest;
-
-    std::string derivedKeyStr(reinterpret_cast<const char*>(derivedKey.data()), derivedKey.size());
-
-    CryptoPP::StringSource ss1(derivedKeyStr, true, new CryptoPP::HashFilter(sha3, new CryptoPP::StringSink(sha3Digest)));
-
     std::string encodedDigest;
     CryptoPP::HexEncoder encoder(new CryptoPP::StringSink(encodedDigest));
-    encoder.Put(reinterpret_cast<const CryptoPP::byte*>(sha3Digest.data()), sha3Digest.size());
+    encoder.Put(derivedKey, derivedKey.size());
     encoder.MessageEnd();
 
     return encodedDigest;
