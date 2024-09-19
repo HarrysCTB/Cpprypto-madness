@@ -9,6 +9,7 @@ set(CMAKE_PREFIX_PATH /Users/${ENV_USER}/Qt/6.7.2/macos/lib/cmake)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
+
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core)
 
 find_path(CRYPTOPP_INCLUDE_DIR NAMES cryptlib.h PATHS /opt/homebrew/Cellar/cryptopp/8.9.0/include/cryptopp)

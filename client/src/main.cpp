@@ -1,16 +1,17 @@
 #include "client.hpp"
+#include "login_page.h"
 #include <QApplication>
 #include <QWidget>
 
 int main(int argc, char **argv) {
     QApplication app(argc, argv);
 
-    QWidget window;
+    LoginPage loginPage;
 
-    window.setWindowTitle("Ma Fenêtre Qt");
-    window.resize(800, 600);
+    loginPage.setWindowTitle("Connect to Vortex Messenger");
+    loginPage.resize(800, 600);
 
-    window.show();
+    loginPage.show();
 
     //Client client;
     //client.run();
