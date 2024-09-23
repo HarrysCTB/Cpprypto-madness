@@ -1,7 +1,7 @@
 #include "auth_page.h"
 
 AuthPage::AuthPage(QWidget *parent) : QFrame(parent), switchButtonStatus(false) {
-    this->setStyleSheet("background-color: #222831;");
+    this->setStyleSheet("background-color: rgb(248, 248, 248);");
 
     QLabel *iconLabel = new QLabel(this);
     QPixmap pixmap("./client/assets/logo.png");
@@ -10,10 +10,10 @@ AuthPage::AuthPage(QWidget *parent) : QFrame(parent), switchButtonStatus(false) 
     iconLabel->setFixedSize(100, 100); 
 
     QLabel *title = new QLabel("Vortex Messenger", this);
-    title->setStyleSheet("font-size: 22px; color: #FFFFFF; font-weight: semibold;");
+    title->setStyleSheet("font-size: 22px; color: black; font-weight: semibold;");
 
     QLabel *description = new QLabel("Encrypted messaging", this);
-    description->setStyleSheet("font-size: 12px; color: rgba(255, 255, 255, 0.7);");
+    description->setStyleSheet("font-size: 12px; color: rgba(0, 0, 0, 0.7);");
     description->setAlignment(Qt::AlignCenter);
 
     QVBoxLayout *titleLayout = new QVBoxLayout(this);
@@ -23,16 +23,18 @@ AuthPage::AuthPage(QWidget *parent) : QFrame(parent), switchButtonStatus(false) 
 
     QWidget *titleWidget = new QWidget(this);
     titleWidget->setLayout(titleLayout);
+    titleWidget->setStyleSheet("background-color: rgb(248, 248, 248);");
+
 
     QFrame *loginCard = new QFrame(this);
 
     switchButton = new QPushButton("Register", loginCard);
     switchButton->setStyleSheet(
             "QPushButton {"
-            "background-color: transparent; color: rgba(255, 255, 255, 0.7); font-size: 14px; text-decoration: underline;"
+            "background-color: transparent; color: rgba(0, 0, 0, 0.8); font-size: 14px; text-decoration: underline;"
             "}"
             "QPushButton:hover {"
-            "background-color: transparent; color: rgba(255, 255, 255, 1); font-size: 14px; text-decoration: underline;"
+            "background-color: transparent; color: rgba(0, 0, 0, 1); font-size: 14px; text-decoration: underline;"
             "}"
     );
     switchButton->setCursor(QCursor(Qt::PointingHandCursor));
@@ -41,14 +43,19 @@ AuthPage::AuthPage(QWidget *parent) : QFrame(parent), switchButtonStatus(false) 
     usernameInput->setPlaceholderText("Username");
     usernameInput->setStyleSheet(R"(
         QLineEdit {
+            background-color: transparent;
             border: none;
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.5);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
             padding: 5px;
             font-size: 14px;
-            color: white;
+            color: black;
         }
         QLineEdit:focus {
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.8);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.5);
+            color: black;
+        }
+        QLineEdit::placeholder {
+            color: rgba(0, 0, 0, 0.6); 
         }
     )");
 
@@ -57,24 +64,26 @@ AuthPage::AuthPage(QWidget *parent) : QFrame(parent), switchButtonStatus(false) 
     passwordInput->setEchoMode(QLineEdit::Password);
     passwordInput->setStyleSheet(R"(
         QLineEdit {
+            background-color: transparent;
             border: none;
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.5);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
             padding: 5px;
             font-size: 14px;
-            color: white;
+            color: black;
         }
         QLineEdit:focus {
-            border-bottom: 0.5px solid rgba(255, 255, 255, 0.8);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.5);
+            color: black;
         }
     )");
 
     sendButton = new QPushButton("Login", loginCard);
     sendButton->setStyleSheet(
             "QPushButton {"
-            "background-color: transparent; color: rgba(255, 255, 255, 0.7); font-size: 16px;"
+            "background-color: transparent; color: rgba(0, 0, 0, 0.7); font-size: 16px;"
             "}"
             "QPushButton:hover {"
-            "background-color: transparent; color: rgba(255, 255, 255, 1); font-size: 16px;"
+            "background-color: transparent; color: rgba(0, 0, 0, 1); font-size: 16px;"
             "}"
     );
     sendButton->setCursor(QCursor(Qt::PointingHandCursor));
