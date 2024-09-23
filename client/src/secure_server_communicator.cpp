@@ -3,9 +3,7 @@
 #include <iostream>
 #include <iomanip>
 
-extern "C" {
-    const unsigned char key_bin[];
-}
+extern "C" const unsigned char key_bin[];
 
 SecureServerCommunicator::SecureServerCommunicator() {
     std::memcpy(key_, key_bin, KEY_SIZE_);
