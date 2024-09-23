@@ -5,6 +5,7 @@
 #include "thread_pool.hpp"
 #include "client_queue_thread_pool.hpp"
 #include "define.hpp"
+#include "secure_server_communicator.hpp"
 
 #include <map>
 #include <vector>
@@ -58,4 +59,6 @@ private:
     std::vector<int> portUse_;
 
     std::unordered_map<int, Rooms*> *rooms_;
+
+    SecureServerCommunicator communicator_;
 };

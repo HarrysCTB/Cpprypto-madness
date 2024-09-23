@@ -7,7 +7,9 @@
 #include <iostream>
 
 Client::Client(UserController *userController, MainWindow *mainWindow)
-    : userController(userController), mainWindow(mainWindow) {}
+    : userController(userController), mainWindow(mainWindow) {
+        communicator_.readKeyFromFile(KEY_FILE_PATH);
+    }
 
 void Client::run() {
     connectToServer("127.0.0.1", 9999, username);
@@ -31,14 +33,14 @@ void Client::connectToServer(const std::string& server_ip, int port, const std::
 }
 
 void Client::handleInput() {
-    CanalHandler canalHandler(server_socket);
+    CanalHandler canalHandler(server_socket, &communicator_);
     userController->setCanal(&canalHandler);
     std::string input;
     while (true) { }
 }
 
 void Client::receiveMessages() {
-    MessageHandler msgHandler;
+    MessageHandler msgHandler(&communicator_);
     userController->setMessage(&msgHandler);
     while (true) {
         std::string message = msgHandler.receiveMessage(server_socket);

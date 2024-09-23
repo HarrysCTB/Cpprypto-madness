@@ -1,6 +1,8 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
+#include "secure_server_communicator.hpp"
+
 #include "user_controller.h"
 #include "main_window.h"
 
@@ -23,6 +25,8 @@ class Client {
     
     UserController *userController;
     MainWindow *mainWindow;
+
+    SecureServerCommunicator communicator_;
 };
 
 #endif
