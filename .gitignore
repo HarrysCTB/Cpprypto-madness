@@ -6,3 +6,7 @@ bin
 .vscode
 .DS_Store
 .idea
+key/key_tmp.o
+key/key.o
+key/key.bin
+key/key.s

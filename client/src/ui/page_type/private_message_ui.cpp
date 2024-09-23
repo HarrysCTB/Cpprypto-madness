@@ -8,6 +8,18 @@ PrivateMessageUi::PrivateMessageUi(std::string nameUser, QWidget *parent) : QWid
 
     nameUser_ = nameUser;
     initaliseSendMsg();
+
+    setMsg("jordan", "salut");
+    setMsg("jordan", "cava ?");
+    setUserMsg("yassine", "salut, oui cava et toi ?");
+    setMsg("jordan", "cava merci");
+    setUserMsg("yassine", "je suis a l'ecole t'es ou ?");
+    setMsg("jordan", "j'arrive il y avais des bouchon, je suis tomber en panne avec ma voiture laisse tombe c'etais un chantier tu reste juska quel heur a l'ecole ?");
+    setUserMsg("yassine", "ah oe c'est la merde jusu'a 17h et toi ?");
+    setMsg("jordan", "pareil je pense");
+    setMsg("jordan", "bon j'arrive");
+    setUserMsg("yassine", "vasy a ++");
+
 }
 
 PrivateMessageUi::~PrivateMessageUi() { }

@@ -7,9 +7,7 @@
 #include <iostream>
 
 Client::Client(UserController *userController, MainWindow *mainWindow)
-    : userController(userController), mainWindow(mainWindow) {
-        communicator_.readKeyFromFile(KEY_FILE_PATH);
-    }
+    : userController(userController), mainWindow(mainWindow) { }
 
 void Client::run() {
     connectToServer("127.0.0.1", 9999, username);

@@ -3,14 +3,12 @@
 #include <iostream>
 #include <iomanip>
 
-SecureServerCommunicator::SecureServerCommunicator() { }
+extern "C" {
+    const unsigned char key_bin[];
+}
 
-void printBuffer(const unsigned char* buffer, size_t size) {
-    std::cout << "Buffer content: ";
-    for (size_t i = 0; i < size; ++i) {
-        std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(buffer[i]) << " ";
-    }
-    std::cout << std::dec << std::endl;
+SecureServerCommunicator::SecureServerCommunicator() {
+    std::memcpy(key_, key_bin, KEY_SIZE_);
 }
 
 void SecureServerCommunicator::prepareMessage(const std::string& message, unsigned char* buffer) {
@@ -33,9 +31,6 @@ void SecureServerCommunicator::prepareMessage(const std::string& message, unsign
 size_t SecureServerCommunicator::encrypt(const unsigned char* plaintext, size_t size, unsigned char* ciphertext, unsigned char* iv) {
     size_t padding = 16 - (size % 16);
     size_t padded_size = size + padding;
-
-    std::cout << "size:" << size << std::endl;
-    std::cout << "padded_size:" << padded_size << std::endl;
 
     unsigned char* padded_plaintext = new unsigned char[padded_size];
     memcpy(padded_plaintext, plaintext, size);
@@ -69,7 +64,6 @@ size_t SecureServerCommunicator::encrypt(const unsigned char* plaintext, size_t 
 
     EVP_CIPHER_CTX_free(ctx);
     delete[] padded_plaintext;
-
     return padded_size;
 }
 
@@ -100,22 +94,4 @@ void SecureServerCommunicator::decrypt(const unsigned char* buffer, size_t size,
     }
 
     EVP_CIPHER_CTX_free(ctx);
-}
-
-void SecureServerCommunicator::writeKeyToFile(const std::string& filename) {
-    std::ofstream file(filename, std::ios::binary);
-    if (!file) {
-        std::cerr << "Impossible d'ouvrir le fichier pour écrire." << std::endl;
-        throw std::runtime_error("Impossible d'ouvrir le fichier pour écrire");
-    }
-    file.write(reinterpret_cast<const char*>(key_), sizeof(key_));
-}
-
-void SecureServerCommunicator::readKeyFromFile(const std::string& filename) {
-    std::ifstream file(filename, std::ios::binary);
-    if (!file) {
-        std::cerr << "Impossible d'ouvrir le fichier pour lire." << std::endl;
-        throw std::runtime_error("Impossible d'ouvrir le fichier pour lire");
-    }
-    file.read(reinterpret_cast<char*>(key_), sizeof(key_));
 }

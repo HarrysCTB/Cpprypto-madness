@@ -14,8 +14,14 @@ include_directories(${OPENSSL_INCLUDE_DIR})
 include_directories(/opt/homebrew/Cellar/cryptopp/8.9.0/include/cryptopp)
 link_directories(/opt/homebrew/Cellar/cryptopp/8.9.0/lib)
 
+set(OBJS ${CMAKE_SOURCE_DIR}/../key/key.o) 
+
 file(GLOB SOURCES "src/*.cpp" "src/command/*.cpp")
 
-add_executable(CryptoMadness_Server ${SOURCES})
+add_executable(CryptoMadness_Server ${SOURCES} ${OBJS})
 
-target_link_libraries(CryptoMadness_Server cryptopp OpenSSL::SSL OpenSSL::Crypto)
+target_link_libraries(CryptoMadness_Server
+    cryptopp
+    OpenSSL::SSL
+    OpenSSL::Crypto
+)

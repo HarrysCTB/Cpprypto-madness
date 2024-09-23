@@ -2,7 +2,6 @@
 
 Command::Command(ClientQueueThreadPool* queueClient, int port)
     : queueClient_(queueClient), client_(nullptr) {
-    communicator_.readKeyFromFile(KEY_FILE_PATH);
     setupServer(port);
     
     commandHandlers_["auth"] = &Command::handleAuthCommand;

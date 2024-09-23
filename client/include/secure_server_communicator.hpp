@@ -7,15 +7,11 @@
 #include <string>
 #include <fstream>
 
-#define KEY_FILE_PATH "/Users/Shared/ClientCryptoMadnessVortex/Users/Key/server.bin"
-
 class SecureServerCommunicator {
 public:
     SecureServerCommunicator();
     size_t encrypt(const unsigned char* plaintext, size_t size, unsigned char* ciphertext, unsigned char* iv);
     void decrypt(const unsigned char* buffer, size_t size, unsigned char* plaintext);
-    void writeKeyToFile(const std::string& filename);
-    void readKeyFromFile(const std::string& filename);
     void prepareMessage(const std::string& message, unsigned char* buffer);
 
 private:

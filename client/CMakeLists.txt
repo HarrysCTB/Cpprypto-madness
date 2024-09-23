@@ -19,9 +19,11 @@ include_directories(${CRYPTOPP_INCLUDE_DIR})
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 
+set(OBJS ${CMAKE_SOURCE_DIR}/../key/key.o) 
+
 file(GLOB_RECURSE SOURCES "src/ui/*.cpp" "src/*.cpp" "include/ui/*.h" "include/*.h" "include/ui/page_type/*.h")
 
-add_executable(CryptoMadness_Client ${SOURCES})
+add_executable(CryptoMadness_Client ${SOURCES} ${OBJS})
 
 target_link_libraries(CryptoMadness_Client
     Qt6::Widgets
