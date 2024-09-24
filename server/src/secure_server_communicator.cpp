@@ -90,6 +90,5 @@ void SecureServerCommunicator::decrypt(const unsigned char* buffer, size_t size,
         EVP_CIPHER_CTX_free(ctx);
         throw std::runtime_error("Échec de la finalisation du déchiffrement");
     }
-
     EVP_CIPHER_CTX_free(ctx);
 }

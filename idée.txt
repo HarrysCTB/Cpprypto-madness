@@ -2,8 +2,8 @@
 
 Les commande sont gerer par des opcode linker a la compilation dans des adresse memoir du binaire pour utiliser un pointeur sur focntion sur l'opcode
 a la compilaition les linker sont :
-	server : opcode, clef symetrique, clef priver asymetrique, vertion
-	client : opcode, clef symetrique, clef public asymetrique, vertion, id du client (logiciel)
+	server : opcode, clef symetrique, vertion
+	client : opcode, clef symetrique, vertion, id du client (logiciel)
 
 Les communication du client vers le serveur se font en 2 etape de chiffrement avec la clef public du server puis avec la clef symetrique du server pour les commande, elle seron dans le binaire du client
 Le client accepte que les communication chifrer avec la clef symetrique il dechiffre avec sa clef symetrique puis dechiffre avec sa clef priver
@@ -112,17 +112,17 @@ Commandes :
 	sendMsgMp	smpu  	100009
 
 Réponses :
-	name func		-> to client opcode
+	name func -> to client response
 
-	setRegisterResponse	 	100001
-	setLoginResponse		100002
-	setPassPhraseResponse	 	100003
-	createRoomResponse	 	100004
-	joinRoomResponse	 	100005
-	sendMsgRoomsResponse	 	100006
-	joinMpResponse			100007
-	clientAcceptMp			100008
-	sendmsgMpResponse	 	100009
+	setRegisterResponse	 	
+	setLoginResponse		
+	setPassPhraseResponse	 	
+	createRoomResponse	 	
+	joinRoomResponse	 	
+	sendMsgRoomsResponse	 	
+	joinMpResponse			
+	clientAcceptMp			
+	sendmsgMpResponse	 	
 
 
 ROOMS: (server)
@@ -171,6 +171,9 @@ Fonctions :
 	joinMpResponse
 	sendmsgMpResponse
 
+	reciveUsrMsg
+	reciveRoomMsg
+
 Commandes :
 	name func	cmd	-> to serv opcode
 
@@ -183,18 +186,26 @@ Commandes :
 	joinMp		jmpu  		100007
 	sendMsgMp	smpu  		100008
 
-Réponses :
-	name func			opcode
 
-	registerResponse	 	100001
-	loginResponse		 	100002
-	passPhraseResponse	 	100003
-	createRoomResponse	 	100004
-	joinRoomResponse	 	100005
-	sendMsgRoomsResponse	 	100006
-	joinMpResponse			100007
-	clientAcceptMp			100008
-	sendmsgMpResponse	 	100009
+Commandes :
+	name func	cmd		opcode?
+	
+	reciveUsrMsg    rvum            10001     
+	reciveRoomMsg   rvrm            10002   
+
+
+Réponses :
+	name func			
+
+	registerResponse	 	
+	loginResponse		 	
+	passPhraseResponse	 	
+	createRoomResponse	 	
+	joinRoomResponse	 	
+	sendMsgRoomsResponse	 	
+	joinMpResponse			
+	clientAcceptMp			
+	sendmsgMpResponse	 	
 
 
 MP: (client)

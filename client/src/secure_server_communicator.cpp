@@ -30,9 +30,6 @@ size_t SecureServerCommunicator::encrypt(const unsigned char* plaintext, size_t 
     size_t padding = 16 - (size % 16);
     size_t padded_size = size + padding;
 
-    std::cout << "size:" << size << std::endl;
-    std::cout << "padded_size:" << padded_size << std::endl;
-
     unsigned char* padded_plaintext = new unsigned char[padded_size];
     memcpy(padded_plaintext, plaintext, size);
 
@@ -94,6 +91,5 @@ void SecureServerCommunicator::decrypt(const unsigned char* buffer, size_t size,
         EVP_CIPHER_CTX_free(ctx);
         throw std::runtime_error("Échec de la finalisation du déchiffrement");
     }
-
     EVP_CIPHER_CTX_free(ctx);
 }
