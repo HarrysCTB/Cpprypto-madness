@@ -34,7 +34,7 @@ void Client::handleInput() {
     CanalHandler canalHandler(server_socket, &communicator_);
     userController->setCanal(&canalHandler);
     std::string input;
-    while (true) { }
+    while (true) {}
 }
 
 void Client::receiveMessages() {

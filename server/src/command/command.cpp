@@ -2,17 +2,21 @@
 #include <cstdio>
 
 #ifdef INCLUDE_OPCODE
-    extern "C" void callOpCodeFunc(Command *cmd, int opcode, void* clientData, std::vector<std::string>& vec);
+    extern "C" int callOpCodeFunc(Command *cmd, int opcode, void* clientData, std::vector<std::string>& vec);
+    extern "C" Command::CommandHandler Command::function_table_op_code[4] = {
+        &Command::handleAuthCommand,
+        &Command::handleCreaCommand,
+        &Command::handleMessCommand,
+        &Command::handleDecoCommand
+    };
 #else
-    extern "C" void callOpCodeFunc(Command *cmd, int opcode, void* clientData, std::vector<std::string>& vec) {}
+    extern "C" int callOpCodeFunc(Command *cmd, int opcode, void* clientData, std::vector<std::string>& vec) {}
 #endif
-extern void* function_table_op_code;
 
 Command::Command(ClientQueueThreadPool* queueClient, int port)
     : queueClient_(queueClient), client_(nullptr) {
     setupServer(port);
 
-    
 #ifndef INCLUDE_OPCODE
     commandHandlers_["auth"] = &Command::handleAuthCommand;
     commandHandlers_["crea"] = &Command::handleCreaCommand;

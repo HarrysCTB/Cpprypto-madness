@@ -90,7 +90,7 @@ function:
 	checkPasswordRoom
 	joinRoom
 	checkRoom
-	sendMsgRoom
+	sendMsgRoo
 
 	checkMp
 	joinMp
@@ -189,9 +189,9 @@ Commandes :
 
 Commandes :
 	name func	cmd		opcode?
-	
-	reciveUsrMsg    rvum            10001     
-	reciveRoomMsg   rvrm            10002   
+
+	reciveUsrMsg    rvum            10001
+	reciveRoomMsg   rvrm            10002
 
 
 Réponses :

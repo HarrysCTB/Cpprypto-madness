@@ -12,7 +12,6 @@ void UserController::setMessage(MessageHandler *message) {
 }
 
 // start
-
 void UserController::emitStartToServer() {
     emit connectToServer();
 }

@@ -1,35 +1,20 @@
-
-.data
-
-.align 8
-function_table_op_code:
-    .quad 0x000000010000e86c  // handleAuthCommand
-    .quad 0x000000010003de6c  // handleCreaCommand
-    .quad 0x000000010003e954  // handleDecoCommand
-    .quad 0x000000010003eb9c  // handleMessCommand
-
-
-.text
+.extern __ZN7Command22function_table_op_codeE  // Déclaration de la table externe
 
 .global _callOpCodeFunc
 _callOpCodeFunc:
-    // x0 : pointeur vers l'objet (this)
-    // x1 : opcode (int)
-    // x2 : pointeur vers clientData (void*)
-    // x3 : référence à std::vector<std::string> (pointeur vers le vecteur)
+    cmp x1, #0x04              // Compare x1 avec 4
+    b.ge error_opcode           // Si x1 >= 4, aller à l'erreur
 
-    cmp x1, #0x04
-    b.ge error_opcode
+    ldr x5, =__ZN7Command22function_table_op_codeE  // Charger l'adresse de la table d'opcode
+    ldr x6, [x5, x1, lsl #3]    // Charger l'adresse de la fonction
 
-    lsl x4, x1, #3 
-    ldr x5, =function_table_op_code 
-    ldr x6, [x5, x4]
+    cbz x6, error_opcode        // Si l'adresse est nulle, aller à l'erreur
 
-    mov x1, x2 
+    mov x1, x2                  // Préparer les arguments
     mov x2, x3
 
-    blr x6 
+    blr x6                      // Appeler la fonction via le pointeur
 
 error_opcode:
-    mov x0, #0
+    mov x0, #0                  // Retourner 0 en cas d'erreur
     ret
