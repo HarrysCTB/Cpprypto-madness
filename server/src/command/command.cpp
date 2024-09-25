@@ -1,13 +1,22 @@
 #include "command.hpp"
+#include <cstdio>
+
+#ifdef INCLUDE_OPCODE
+    extern "C" void callOpCodeFunc(Command *cmd, int opcode, void* clientData, std::vector<std::string>& vec);
+#else
+    extern "C" void callOpCodeFunc(Command *cmd, int opcode, void* clientData, std::vector<std::string>& vec) {}
+#endif
 
 Command::Command(ClientQueueThreadPool* queueClient, int port)
     : queueClient_(queueClient), client_(nullptr) {
     setupServer(port);
-    
-    commandHandlers_["auth"] = &Command::handleAuthCommand;
-    commandHandlers_["crea"] = &Command::handleCreaCommand;
-    commandHandlers_["mess"] = &Command::handleMessCommand;
-    commandHandlers_["deco"] = &Command::handleDecoCommand;
+
+    /*
+        commandHandlers_["auth"] = &Command::handleAuthCommand;
+        commandHandlers_["crea"] = &Command::handleCreaCommand;
+        commandHandlers_["mess"] = &Command::handleMessCommand;
+        commandHandlers_["deco"] = &Command::handleDecoCommand;
+    */
 }
 
 void Command::setupServer(int port) {
@@ -111,7 +120,9 @@ void Command::processCommand(ClientData* client, const std::string& command) {
         commands.push_back(*it++);
     }
 
-    auto itCommand = commandHandlers_.find(commands[0]);
+    //callOpCodeFunc(this, 0x01, client, commands);
+
+    /*auto itCommand = commandHandlers_.find(commands[0]);
     if (itCommand != commandHandlers_.end()) {
         queueClient_->enqueueClientTask(client->socket_fd, [this, client, commands, itCommand]() {
             if (!client->authenticated && (commands[0] == "auth" || commands[0] == "crea") || client->authenticated) {
@@ -122,5 +133,5 @@ void Command::processCommand(ClientData* client, const std::string& command) {
         });
     } else {
         sendToClient(client, "500\r\n");
-    }
+    }*/
 }

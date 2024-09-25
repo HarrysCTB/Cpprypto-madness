@@ -1,11 +1,12 @@
 
 
-Les commande sont gerer par des opcode linker a la compilation dans des adresse memoir du binaire pour utiliser un pointeur sur focntion sur l'opcode
+Les commandes sont gerer par des opcode linker a la compilation dans des adresses memoires du binaire pour utiliser un pointeur sur fonction sur l'opcode
 a la compilaition les linker sont :
 	server : opcode, clef symetrique, vertion
 	client : opcode, clef symetrique, vertion, id du client (logiciel)
 
 Les communication du client vers le serveur se font en 2 etape de chiffrement avec la clef public du server puis avec la clef symetrique du server pour les commande, elle seron dans le binaire du client
+Les communications du client vers le serveur se font en 2 etape de chiffrement avec la clef public du server puis avec la clef symetrique du server pour les commande, elle seron dans le binaire du client
 Le client accepte que les communication chifrer avec la clef symetrique il dechiffre avec sa clef symetrique puis dechiffre avec sa clef priver
 
 Clé Symétrique  : AES 128
@@ -219,14 +220,4 @@ Les messages sont éphémères, disparaissant une heure après réception (ou le
 
 Les messages envoyés à des clients déconnectés sont stockés sur le serveur, chiffrés avec la clé privée du client en question, et sont envoyés lorsque le client se reconnecte.
 Lorsqu'un client veut se connecter à un autre, il envoie d'abord une demande ; si elle est acceptée, il fournit la clé publique du client et reçoit celle de l'autre pour permettre la communication.
-
-
-
-
-
-
-
-
-
-
 

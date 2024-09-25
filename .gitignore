@@ -9,3 +9,4 @@ bin
 key/key_tmp.o
 key/key.o
 key/key.bin
+server/src/opcode/opcode.o

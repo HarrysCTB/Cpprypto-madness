@@ -39,6 +39,7 @@ public:
     bool serverStart_;
 
 private:
+
     void setupServer(int port);
     void processCommand(ClientData* client, const std::string& command);
 
