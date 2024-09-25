@@ -5,7 +5,6 @@ a la compilaition les linker sont :
 	server : opcode, clef symetrique, vertion
 	client : opcode, clef symetrique, vertion, id du client (logiciel)
 
-Les communication du client vers le serveur se font en 2 etape de chiffrement avec la clef public du server puis avec la clef symetrique du server pour les commande, elle seron dans le binaire du client
 Les communications du client vers le serveur se font en 2 etape de chiffrement avec la clef public du server puis avec la clef symetrique du server pour les commande, elle seron dans le binaire du client
 Le client accepte que les communication chifrer avec la clef symetrique il dechiffre avec sa clef symetrique puis dechiffre avec sa clef priver
 
