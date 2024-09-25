@@ -51,8 +51,10 @@ private:
     int serverSocketCommand_;
     struct sockaddr_in serverAddrCommand_;
 
+#ifndef INCLUDE_OPCODE
     using CommandHandler = void (Command::*)(ClientData *, std::vector<std::string>);
     std::map<std::string, CommandHandler> commandHandlers_;
+#endif
 
     ClientQueueThreadPool* queueClient_;
     ClientData* client_;

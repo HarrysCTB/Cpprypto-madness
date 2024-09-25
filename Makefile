@@ -22,9 +22,8 @@ build:
 
 	@echo "$(BLUE)Move opcode.s in src/opcode ...$(RESET)"
 	@cp $(SERVER_DIR)/script/opcode.s $(SERVER_DIR)/src/opcode/opcode.s
-	@echo "$(BLUE)Create ObjFile Opcode: opcode.o ...$(RESET)"
-	@as -arch arm64 -mmacosx-version-min=10.14 -o $(SERVER_DIR)/src/opcode/opcode.o $(SERVER_DIR)/src/opcode/opcode.s
-	
+#@echo "$(BLUE)Create ObjFile Opcode: opcode.o ...$(RESET)"
+#@as -arch arm64 -mmacosx-version-min=10.14 -o $(SERVER_DIR)/src/opcode/opcode.o $(SERVER_DIR)/src/opcode/opcode.s
 
 	@echo "$(BLUE)Creating directories...$(RESET)"
 	@mkdir -p $(SERVER_DIR)/$(BIN_DIR) $(SERVER_DIR)/$(BIN_DIR)/objects $(CLIENT_DIR)/$(BIN_DIR)
@@ -32,7 +31,7 @@ build:
 	@mkdir -p $(BIN_DIR)
 
 	@echo "$(BLUE)Running cmake for server...$(RESET)"
-	@cd $(SERVER_DIR)/$(BUILD_DIR) && cmake -DINCLUDE_OPCODE=ON ..
+	@cd $(SERVER_DIR)/$(BUILD_DIR) && cmake -DINCLUDE_OPCODE=OFF ..
 	@echo "$(BLUE)Building server...$(RESET)"
 	@cd $(SERVER_DIR)/$(BUILD_DIR) && $(MAKE)
 #@find $(SERVER_DIR)/$(BUILD_DIR)/CMakeFiles/CryptoMadness_Server.dir -name '*.o' -exec cp {} $(SERVER_DIR)/bin/objects/ \;

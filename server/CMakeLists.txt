@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch arm64 -mmacosx-version-min=10.14 -g") 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch arm64 -mmacosx-version-min=10.14") 
 
 include_directories(include)
 
@@ -21,9 +21,17 @@ option(INCLUDE_OPCODE "Include opcode.o in the build" ON)
 set(OBJS)
 
 if(INCLUDE_OPCODE)
-    list(APPEND OBJS ${CMAKE_SOURCE_DIR}/src/opcode/opcode.o)
     add_definitions(-DINCLUDE_OPCODE)
     message(STATUS "Including opcode.o")
+    
+    set(ASM_SRC ${CMAKE_SOURCE_DIR}/src/opcode/opcode.s)
+    add_custom_command(
+        OUTPUT ${CMAKE_SOURCE_DIR}/src/opcode/opcode.o
+        COMMAND as -arch arm64 -mmacosx-version-min=10.14 -o ${CMAKE_SOURCE_DIR}/src/opcode/opcode.o ${ASM_SRC}
+        DEPENDS ${ASM_SRC}
+        COMMENT "Building opcode.o from opcode.s"
+    )
+    list(APPEND OBJS ${CMAKE_SOURCE_DIR}/src/opcode/opcode.o)
 else()
     message(STATUS "Not including opcode.o")
 endif()
