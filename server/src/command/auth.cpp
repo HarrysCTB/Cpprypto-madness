@@ -8,10 +8,6 @@
  * and, if valid, authenticates the client and assigns them to a room.
  * 
  * @param client  A pointer to the ClientData structure representing the client's data sending the command.
- * @param commands  A vector of strings containing the commands sent by the client.
- *                   - commands[0]: The command name (e.g., "AUTH").
- *                   - commands[1]: The provided username.
- *                   - commands[2] (optional): The provided password (if required).
  * 
  * @return void
  * 
@@ -34,30 +30,48 @@
  * 
  *  - **250**: The client is successfully authenticated and can proceed to the next operations.
  */
-void Command::handleAuthCommand(ClientData* client, std::vector<std::string> commands) {
-    if (commands.size() != 3) {
-        sendToClient(client, "550 Insufficient arguments\r\n");
+
+struct AuthStruct {
+    int uid;
+    unsigned char username[50];
+    unsigned char password[50];
+};
+
+void Command::handleAuthCommand(ClientData* client, const StuctToServ& message) {
+
+    AuthStruct* authData = static_cast<AuthStruct*>(message.data);
+    
+    const std::string username(reinterpret_cast<char*>(authData->username));
+    const std::string password(reinterpret_cast<char*>(authData->password));
+
+    StructToClient response;
+    response.id = message.id;
+    response.opcode = NONE_CODE;
+
+    if (username.empty() || password.empty()) {
+        response.setStatus(CodeResponseStatus::Error, 550);
+        sendToClient(client, response);
         return;
     }
-
-    const std::string& username = commands[1];
-    const std::string& password = commands[2];
 
     UserManager userManager(username);
 
     if (!userManager.userExist()) {
-        sendToClient(client, "551 Username not found\r\n");
+        response.setStatus(CodeResponseStatus::Error, 551);
+        sendToClient(client, response);
         return;
     }
 
     if (!userManager.verifyPassword(password)) {
-        sendToClient(client, "552 Incorrect password\r\n");
+        response.setStatus(CodeResponseStatus::Error, 552);
+        sendToClient(client, response);
         return;
     }
 
     auto it = rooms_->find(1);
     if (it == rooms_->end()) {
-        sendToClient(client, "561 Room not found\r\n");
+        response.setStatus(CodeResponseStatus::Error, 561);
+        sendToClient(client, response);
         return;
     }
 
@@ -68,5 +82,6 @@ void Command::handleAuthCommand(ClientData* client, std::vector<std::string> com
     client->username = username;
     client->authenticated = true;
 
-    sendToClient(client, "250 Authentication successful\r\n");
+    response.setStatus(CodeResponseStatus::Ok, 250);
+    sendToClient(client, response);
 }

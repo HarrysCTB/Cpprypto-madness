@@ -7,8 +7,6 @@
  * It ensures that the client is properly disconnected and resets their session data.
  * 
  * @param client  A pointer to the ClientData structure representing the client's data sending the command.
- * @param commands  A vector of strings containing the commands sent by the client.
- *                   - commands[0]: The command name (e.g., "DECO").
  * 
  * @return void
  * 
@@ -27,23 +25,42 @@
  * 
  *  - **250**: The client has been successfully disconnected and their session reset.
  */
-void Command::handleDecoCommand(ClientData* client, std::vector<std::string> commands) {
-    if (commands.size() != 1) {
-        sendToClient(client, "550 Invalid number of arguments\r\n");
+
+struct DecoStruct {
+    int uid;
+    unsigned char username[50];
+};
+
+void Command::handleDecoCommand(ClientData* client, const StuctToServ& message) {
+
+    DecoStruct* decoData = static_cast<DecoStruct*>(message.data);
+
+    const std::string username(reinterpret_cast<const char*>(decoData->username));
+
+    StructToClient response;
+    response.id = message.id;
+    response.opcode = NONE_CODE;
+
+    if (username.empty()) {
+        response.setStatus(CodeResponseStatus::Error, 550);
+        sendToClient(client, response);
         return;
     }
 
     if (!client->authenticated) {
-        sendToClient(client, "561 Client not connected\r\n");
+        response.setStatus(CodeResponseStatus::Error, 561);
+        sendToClient(client, response);
         return;
     }
 
-    bool disconnected = true; //Todo
+    bool disconnected = true; // Todo
     if (!disconnected) {
-        sendToClient(client, "562 Failed to disconnect from server\r\n");
+        response.setStatus(CodeResponseStatus::Error, 562);
+        sendToClient(client, response);
         return;
     }
 
     client->reset();
-    sendToClient(client, "250 Disconnected from server successfully\r\n");
+    response.setStatus(CodeResponseStatus::Ok, 250);
+    sendToClient(client, response);
 }

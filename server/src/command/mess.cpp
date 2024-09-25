@@ -7,9 +7,6 @@
  * and that a valid message is provided. The message is then broadcast to the room.
  * 
  * @param client  A pointer to the ClientData structure representing the client's data sending the command.
- * @param commands  A vector of strings containing the commands sent by the client.
- *                   - commands[0]: The command name (e.g., "MESS").
- *                   - commands[1+]: The message to be sent.
  * 
  * @return void
  * 
@@ -29,8 +26,9 @@
  * 
  *  - **250**: The message was successfully sent to the room.
  */
-void Command::handleMessCommand(ClientData* client, std::vector<std::string> commands) {
-    if (commands.size() < 2) {
+void Command::handleMessCommand(ClientData* client, const StuctToServ& message) {
+    // Todo
+    /*if (commands.size() < 2) {
         sendToClient(client, "550 Insufficient arguments\r\n");
         return;
     }
@@ -60,6 +58,6 @@ void Command::handleMessCommand(ClientData* client, std::vector<std::string> com
         return;
     }
 
-    sendToClient(client, "250 Message sent successfully\r\n");
+    sendToClient(client, "250 Message sent successfully\r\n");*/
 }
     

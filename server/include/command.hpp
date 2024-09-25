@@ -26,6 +26,21 @@
 
 struct ClientData;
 
+#define NONE_CODE 0x00
+
+#include "universal_structs_server.hpp"
+//server OpCode
+#define AUTH_CODE 0x01
+#define CREA_CODE 0x02
+#define MESS_CODE 0x03
+#define DECO_CODE 0x04
+
+#include "responseToClientStruct.hpp"
+//client OpCode
+#define CNNT_CODE 0x01
+#define RVUM_CODE 0x02
+#define RVRM_CODE 0x03
+
 class Command {
 public:
     Command(ClientQueueThreadPool* threadPool = nullptr, int port = 9999);
@@ -34,16 +49,16 @@ public:
     int acceptClient(std::unordered_map<int, Rooms*> *rooms);
     int getServerSocket() const;
     bool handleClient(ClientData* client);
-    void sendToClient(ClientData *client, const std::string& message);
+    void sendToClient(ClientData *client, const StructToClient& message);
 
-    void handleAuthCommand(ClientData* client, std::vector<std::string> commands);
-    void handleCreaCommand(ClientData* client, std::vector<std::string> commands);
-    void handleMessCommand(ClientData* client, std::vector<std::string> commands);
-    void handleDecoCommand(ClientData* client, std::vector<std::string> commands);
+    void handleAuthCommand(ClientData* client, const StuctToServ& message);
+    void handleCreaCommand(ClientData* client, const StuctToServ& message);
+    void handleMessCommand(ClientData* client, const StuctToServ& message);
+    void handleDecoCommand(ClientData* client, const StuctToServ& message);
 
-    using CommandHandler = void (Command::*)(ClientData*, std::vector<std::string>);
+    using CommandHandler = void (Command::*)(ClientData*, const StuctToServ& message);
     #ifndef INCLUDE_OPCODE
-        std::map<std::string, CommandHandler> commandHandlers_;
+        std::map<int, CommandHandler> commandHandlers_;
     #else
         static CommandHandler function_table_op_code[4];
     #endif
@@ -53,7 +68,7 @@ public:
 private:
 
     void setupServer(int port);
-    void processCommand(ClientData* client, const std::string& command);
+    void processCommand(ClientData* client, const StuctToServ& message);
 
     int serverSocketCommand_;
     struct sockaddr_in serverAddrCommand_;

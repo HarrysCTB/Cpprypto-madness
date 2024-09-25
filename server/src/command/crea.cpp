@@ -8,10 +8,6 @@
  * before confirming the creation of the user account.
  * 
  * @param client  A pointer to the ClientData structure representing the client's data sending the command.
- * @param commands  A vector of strings containing the commands sent by the client.
- *                   - commands[0]: The command name (e.g., "CREA").
- *                   - commands[1]: The proposed username.
- *                   - commands[2]: The proposed password.
  * 
  * @return void
  * 
@@ -39,36 +35,55 @@
  * 
  *  - **250**: The account has been successfully created, and the client is informed of the successful operation.
  */
-void Command::handleCreaCommand(ClientData* client, std::vector<std::string> commands) {
-    if (commands.size() != 3) {
-        sendToClient(client, "550 Insufficient arguments\r\n");
+
+struct CreaStruct {
+    int uid;
+    unsigned char username[50];
+    unsigned char password[50];
+};
+
+void Command::handleCreaCommand(ClientData* client, const StuctToServ& message) {
+
+    CreaStruct* creaData = static_cast<CreaStruct*>(message.data);
+
+    const std::string username(reinterpret_cast<const char*>(creaData->username));
+    const std::string password(reinterpret_cast<const char*>(creaData->password));
+
+    StructToClient response;
+    response.id = message.id;
+    response.opcode = NONE_CODE;
+
+    if (username.empty() || password.empty()) {
+        response.setStatus(CodeResponseStatus::Error, 550);
+        sendToClient(client, response);
         return;
     }
 
-    const std::string& username = commands[1];
-    const std::string& password = commands[2];
-
     if (username.length() < 3 || username.length() > 16) {
-        sendToClient(client, "551 Invalid username\r\n");
+        response.setStatus(CodeResponseStatus::Error, 551);
+        sendToClient(client, response);
         return;
     }
 
     if (!std::all_of(username.begin(), username.end(), [](char c) {
         return std::isalnum(c) || c == '_' || c == '-';
     })) {
-        sendToClient(client, "551 Invalid username\r\n");
+        response.setStatus(CodeResponseStatus::Error, 551);
+        sendToClient(client, response);
         return;
     }
 
     UserManager userManager(username);
 
     if (userManager.userExist()) {
-        sendToClient(client, "552 Username already taken\r\n");
+        response.setStatus(CodeResponseStatus::Error, 552);
+        sendToClient(client, response);
         return;
     }
 
     if (password.length() < 6) {
-        sendToClient(client, "560 Password too short\r\n");
+        response.setStatus(CodeResponseStatus::Error, 560);
+        sendToClient(client, response);
         return;
     }
 
@@ -79,14 +94,17 @@ void Command::handleCreaCommand(ClientData* client, std::vector<std::string> com
     bool hasDigit = std::any_of(password.begin(), password.end(), ::isdigit);
 
     if (!hasUppercase || !hasSpecialChar || !hasDigit) {
-        sendToClient(client, "560 Password does not meet security requirements\r\n");
+        response.setStatus(CodeResponseStatus::Error, 560);
+        sendToClient(client, response);
         return;
     }
 
     if (!userManager.createUser(password)) {
-        sendToClient(client, "561 Server error during account creation\r\n");
+        response.setStatus(CodeResponseStatus::Error, 561);
+        sendToClient(client, response);
         return;
     }
 
-    sendToClient(client, "250 Account created successfully\r\n");
+    response.setStatus(CodeResponseStatus::Ok, 250);
+    sendToClient(client, response);
 }
