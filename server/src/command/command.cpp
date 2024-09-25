@@ -109,7 +109,8 @@ int Command::acceptClient(std::unordered_map<int, Rooms*>* rooms) {
     response.id = 0;
     response.opcode = CNNT_CODE;
     response.timestamp = std::chrono::system_clock::now();
-    response.data = static_cast<void*>(new CnntStruct("220\r\n"));
+    response.setStatus(CodeResponseStatus::Ok, 200);
+
 
     unsigned char buffer[4 + 16 + 1024];
     std::memset(buffer, 0, sizeof(buffer));

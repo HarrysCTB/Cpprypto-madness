@@ -41,12 +41,11 @@ void Client::receiveMessages() {
     MessageHandler msgHandler(&communicator_);
     userController->setMessage(&msgHandler);
     while (true) {
-        std::string message = msgHandler.receiveMessage(server_socket);
-        if (!message.empty()) {
-            std::cout << "Message reçu: " << message << std::endl;
-            std::string firstThreeChars = message.substr(0, 3);
-            int number = std::stoi(firstThreeChars);
-            emit userController->sendLoginCode(number);
-        } 
+        StructToClient message = msgHandler.receiveMessage(server_socket);
+        std::cout << "Message reçu: " << message.opcode << std::endl;
+        std::cout << "id : " << message.id << std::endl;
+        std::cout << "status : " << message.status[0][0] << std::endl;
+        std::cout << message.id << std::endl;        
+        emit userController->sendLoginCode(message.status[1][0]);
     }
 }

@@ -8,8 +8,8 @@
 class MessageHandler {
     public:
         MessageHandler(SecureServerCommunicator *communicator);
-        void sendMessage(int socket, const std::string& message);
-        std::string receiveMessage(int socket);
+        void sendMessage(int socket, const StuctToServ& response);
+        StructToClient receiveMessage(int socket);
     
     private:
         SecureServerCommunicator *communicator_;

@@ -44,10 +44,12 @@ struct CreaStruct {
 
 void Command::handleCreaCommand(ClientData* client, const StuctToServ& message) {
 
-    CreaStruct* creaData = static_cast<CreaStruct*>(message.data);
-
-    const std::string username(reinterpret_cast<const char*>(creaData->username));
-    const std::string password(reinterpret_cast<const char*>(creaData->password));
+    //CreaStruct* creaData = static_cast<CreaStruct*>(message.data);
+    //const std::string username(reinterpret_cast<const char*>(creaData->username));
+    //const std::string password(reinterpret_cast<const char*>(creaData->password));
+    
+    const std::string username(reinterpret_cast<const char*>(message.data.username));
+    const std::string password(reinterpret_cast<const char*>(message.data.password));
 
     StructToClient response;
     response.id = message.id;

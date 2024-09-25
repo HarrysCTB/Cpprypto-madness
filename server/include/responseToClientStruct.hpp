@@ -9,3 +9,27 @@ struct CnntStruct {
         code[sizeof(code) - 1] = '\0';
     }
 };
+
+struct GeneriqueDataReciveStruct {
+    int uid;
+    unsigned char username[48];
+    unsigned char password[48];
+    unsigned char msg[256];
+    unsigned char nameRoom[48];
+    unsigned char passPhraseClient[48];
+
+    GeneriqueDataReciveStruct() {
+        std::memset(this, 0, sizeof(GeneriqueDataReciveStruct));
+    }
+};
+
+struct GeneriqueDataSendStruct {
+    int uid;
+    unsigned char username[48];
+    unsigned char msg[256];
+    unsigned char nameRoom[48];
+
+    GeneriqueDataSendStruct() {
+        std::memset(this, 0, sizeof(GeneriqueDataSendStruct));
+    }
+};

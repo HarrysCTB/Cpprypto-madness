@@ -33,9 +33,10 @@ struct DecoStruct {
 
 void Command::handleDecoCommand(ClientData* client, const StuctToServ& message) {
 
-    DecoStruct* decoData = static_cast<DecoStruct*>(message.data);
+    //DecoStruct* decoData = static_cast<DecoStruct*>(message.data);
+    //const std::string username(reinterpret_cast<const char*>(decoData->username));
 
-    const std::string username(reinterpret_cast<const char*>(decoData->username));
+    const std::string username(reinterpret_cast<const char*>(message.data.username));
 
     StructToClient response;
     response.id = message.id;

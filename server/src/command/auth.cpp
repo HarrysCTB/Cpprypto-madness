@@ -39,10 +39,12 @@ struct AuthStruct {
 
 void Command::handleAuthCommand(ClientData* client, const StuctToServ& message) {
 
-    AuthStruct* authData = static_cast<AuthStruct*>(message.data);
-    
-    const std::string username(reinterpret_cast<char*>(authData->username));
-    const std::string password(reinterpret_cast<char*>(authData->password));
+    //AuthStruct* authData = static_cast<AuthStruct*>(message.data);
+    //const std::string username(reinterpret_cast<char*>(authData->username));
+    //const std::string password(reinterpret_cast<char*>(authData->password));
+
+    const std::string username(reinterpret_cast<const char*>(message.data.username));
+    const std::string password(reinterpret_cast<const char*>(message.data.password));
 
     StructToClient response;
     response.id = message.id;

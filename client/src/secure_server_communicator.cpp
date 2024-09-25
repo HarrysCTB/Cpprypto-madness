@@ -9,23 +9,22 @@ SecureServerCommunicator::SecureServerCommunicator() {
     std::memcpy(key_, key_bin, KEY_SIZE_);
 }
 
-void SecureServerCommunicator::prepareMessage(const std::string& message, unsigned char* buffer) {
-    if (message.empty()) {
-        return;
-    }
+void SecureServerCommunicator::prepareMessage(const StuctToServ& msg, unsigned char* buffer) {
+    unsigned char *message = (unsigned char *)malloc(sizeof(StuctToServ));
+    memcpy(message, &msg, sizeof(StuctToServ));
 
     unsigned char iv[16];
     RAND_bytes(iv, sizeof(iv));
 
     unsigned char ciphertext[1024];
-    size_t ciphertext_len = encrypt(reinterpret_cast<const unsigned char*>(message.c_str()), message.size(), ciphertext, iv);
+    size_t ciphertext_len = encrypt(message, sizeof(StuctToServ), ciphertext, iv);
 
     memcpy(buffer, &ciphertext_len, sizeof(ciphertext_len));
     memcpy(buffer + sizeof(ciphertext_len), iv, sizeof(iv));
     memcpy(buffer + sizeof(ciphertext_len) + sizeof(iv), ciphertext, ciphertext_len);
     memset(buffer + sizeof(ciphertext_len) + sizeof(iv) + ciphertext_len, 0, 1040 - (sizeof(ciphertext_len) + sizeof(iv) + ciphertext_len));
+    free (message);
 }
-
 size_t SecureServerCommunicator::encrypt(const unsigned char* plaintext, size_t size, unsigned char* ciphertext, unsigned char* iv) {
     size_t padding = 16 - (size % 16);
     size_t padded_size = size + padding;
