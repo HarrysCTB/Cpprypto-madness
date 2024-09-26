@@ -9,7 +9,6 @@
 enum CodeResponseStatus {
     Ok,
     Ongoing,
-    End,
     Error
 };
 

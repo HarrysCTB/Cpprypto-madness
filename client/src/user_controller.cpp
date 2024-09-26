@@ -25,3 +25,4 @@ void UserController::sendLogin(const std::string &username, const std::string &p
     canal->handleAuth(username, password);
 }
 
+

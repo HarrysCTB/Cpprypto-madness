@@ -189,7 +189,7 @@ Commandes :
 
 Commandes :
 	name func	cmd		opcode?
-	
+
 	connected	cnnt		10001
 	reciveUsrMsg    rvum            10002
 	reciveRoomMsg   rvrm            10003

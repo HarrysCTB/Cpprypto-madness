@@ -127,6 +127,10 @@ int Command::acceptClient(std::unordered_map<int, Rooms*>* rooms) {
 void Command::processCommand(ClientData* client, const StuctToServ& message) {
     client_ = client;
 
+    std::cout << "Op Code     : " << message.opcode << std::endl;
+    std::cout << "id command     : " << message.id << std::endl;
+    std::cout << std::endl;
+
 #ifdef INCLUDE_OPCODE
     callOpCodeFunc(this, 0x01, client, commands);
 #else

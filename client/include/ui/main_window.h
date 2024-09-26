@@ -8,6 +8,8 @@
 #include <QMainWindow>
 #include <QScreen>
 
+class UserController;
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
 

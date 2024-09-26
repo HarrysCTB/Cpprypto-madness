@@ -31,3 +31,4 @@ public:
     bool verifyPassword(const std::string& password);
     bool createUser(const std::string& password);
 };
+
